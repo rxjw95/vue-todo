@@ -1,0 +1,44 @@
+<template>
+  <div class="todo-list-block">
+    <div v-for="todo in todos" :key="todo.details"> 
+      <TodoItem 
+        :id="todo.id"
+        :details="todo.details" 
+        :status="todo.status"
+        @onClickCheckBtn="onClickCheckBtn"
+        @onClickRemoveBtn="onClickRemoveBtn"
+        />
+    </div>
+  </div>
+</template>
+
+<script>
+import TodoItem from './TodoItem.vue';
+export default {
+  name: 'TodoItemList',
+  components: {
+    TodoItem,
+  },
+  props: {
+    todos: Array,
+  },
+  methods: {
+    onClickCheckBtn(id) {
+      this.$emit("onClickCheckBtn", id);
+    },
+    onClickRemoveBtn(id) {
+      this.$emit("onClickRemoveBtn", id);
+    }
+  },
+
+}
+</script>
+
+<style>
+  .todo-list-block {
+    flex: 1;
+    padding: 10px 15px;
+    padding-bottom: 10px;
+    overflow-y: auto;
+  }
+</style>
