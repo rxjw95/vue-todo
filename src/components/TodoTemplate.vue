@@ -7,12 +7,13 @@
           :value="editDetails"
           @onClickAllCheckBtn="onClickAllCheckBtn"
           @onChangeEdit="onChangeEdit"
-          @onEnterPress="onEnterPress"/>
+          @onPressCreateEnter="onPressCreateEnter"/>
     </section>
 
     <section class="todos-wrapper">
         <TodoItemList 
           :todos="todos"
+          :value="changeDetails"
           @onClickCheckBtn="onClickCheckBtn"
           @onClickRemoveBtn="onClickRemoveBtn" />
     </section>
@@ -49,6 +50,7 @@ export default {
         {id: 2, details: "스프링 포기", status: "active"},
       ],
       editDetails: "",
+      changeDetails: "",
     }
   },
   methods: {
@@ -58,7 +60,7 @@ export default {
     onChangeEdit(details) {
       this.editDetails = details;
     },
-    onEnterPress() {
+    onPressCreateEnter() {
       if(!this.editDetails) {
         alert("할 일을 입력하세요.");
         return;
@@ -66,12 +68,26 @@ export default {
       this.todos = [...this.todos, {id: this.todos.length, details: this.editDetails, status: 'active'}];
       this.editDetails = "";
     },
+
     onClickCheckBtn(id) {
       this.todos = this.todos.map(todo => todo.id === id ? { ...todo, status: todo.status === 'active' ? 'done' : 'active' } : todo);
+    },
+    onChanageDetails(details) {
+      this.changeDetails = details;
+    },
+    //TODO: 수정 로직 구현
+    onPressChangeEnter(id) {
+      if(!this.changeDetails) {
+        alert("할 일을 입력하세요.");
+        return;
+      }
+      this.todos = [...this.todos, {id: this.todos.length, details: this.editDetails, status: 'active'}];
+      this.editDetails = "";
     },
     onClickRemoveBtn(id) {
       this.todos = this.todos.filter(todo => todo.id !== id)
     },
+
     onClickFilterAllBtn() {
       this.todos = this.todos.filter(todo => todo);
     },

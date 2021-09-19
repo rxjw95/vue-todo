@@ -5,7 +5,7 @@
         placeholder="What needs to be done?" 
         :value="value" 
         @input="onChangeEdit" 
-        @keyup.enter="onEnterPress" />
+        @keyup.enter="onPressCreateEnter" />
     </div>
     
 </template>
@@ -27,8 +27,8 @@ export default {
     onChangeEdit($event) {
       this.$emit("onChangeEdit", $event.target.value);
     },
-    onEnterPress() {
-      this.$emit("onEnterPress");
+    onPressCreateEnter() {
+      this.$emit("onPressCreateEnter");
     },
 
     getAllTodos() {

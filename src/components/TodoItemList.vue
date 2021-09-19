@@ -1,10 +1,12 @@
 <template>
   <div class="todo-list-block">
+    <!--TODO: 자식으로 온 더블 클릭 이벤트의 id로 부터 change props를 전달-->
     <div v-for="todo in todos" :key="todo.details"> 
       <TodoItem 
         :id="todo.id"
         :details="todo.details" 
         :status="todo.status"
+        :value="value"
         @onClickCheckBtn="onClickCheckBtn"
         @onClickRemoveBtn="onClickRemoveBtn"
         />
@@ -21,6 +23,7 @@ export default {
   },
   props: {
     todos: Array,
+    value: String,
   },
   methods: {
     onClickCheckBtn(id) {
