@@ -6,8 +6,12 @@
         :id="todo.id"
         :details="todo.details" 
         :status="todo.status"
-        :value="value"
+        :changeId="changeId"
         @onClickCheckBtn="onClickCheckBtn"
+        @onDoubleClickText="onDoubleClickText"
+        @onChangeDetails="onChangeDetails"
+        @onPressChangeEnter="onPressChangeEnter"
+        @onCancleChange="onCancleChange"
         @onClickRemoveBtn="onClickRemoveBtn"
         />
     </div>
@@ -21,13 +25,30 @@ export default {
   components: {
     TodoItem,
   },
+  data() {
+    return {
+      changeId: -1,
+    }
+  },
   props: {
     todos: Array,
-    value: String,
   },
   methods: {
     onClickCheckBtn(id) {
       this.$emit("onClickCheckBtn", id);
+    },
+    onDoubleClickText(id) {
+      this.changeId = id;
+    },
+    onChangeDetails(details) {
+      this.$emit("onChangeDetails", details);
+    },
+    onPressChangeEnter(id) {
+      this.changeId = -1;
+      this.$emit("onPressChangeEnter", id);
+    },
+    onCancleChange() {
+      this.changeId = -1;
     },
     onClickRemoveBtn(id) {
       this.$emit("onClickRemoveBtn", id);

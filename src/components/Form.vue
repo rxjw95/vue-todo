@@ -15,10 +15,7 @@ export default {
   name: 'Form',
   props: {
     todos: Array,
-    value: {
-      type: String,
-      default: "",
-    }
+    value: String,
   },
   methods: {
     onClickAllCheckBtn() {

@@ -8,12 +8,13 @@
     <div v-else class="change-item">
       <input 
         class="input-text" 
-        :value="value" 
+        :value="details" 
         @input="onChangeDetails"
         @keyup.enter="onPressChangeEnter"
-        @blur="onCancle"
-        @keyup.esc="onCancle"
-        autofocus/>
+        @blur="onCancleChange"
+        @keyup.esc="onCancleChange"
+        ref="editbar"
+        />
     </div>
     
   </div>
@@ -23,37 +24,42 @@
 
 export default {
   name: 'TodoItem',
-
-  data() {
-    return {
-      isChange: false,
-    };
-  },
-
   props: {
     id: Number,
     details: String,
     status: String,
-    value: String,
+    changeId: Number,
   },
-
+  updated() {
+    this.onEditFocus();
+  },
   computed: {
     checkCircle() {
       return this.status === 'active' ? 'check-circle' : 'check-circle done';
     },
     text() {
       return this.status === 'active' ? 'text' : 'text done';
+    },
+    isChange : {
+      get() {
+        return this.id === this.changeId;
+      },
+      set() {
+
+      }
     }
   },
-
   methods: {
+    onEditFocus() {
+      this.$refs.editbar && this.$refs.editbar.focus();
+    }, 
+
     onClickCheckBtn() {
       this.$emit("onClickCheckBtn", this.id);
     },
 
     onDoubleClickText() {
-      //TODO: TodoItemList로 변경되는 id를 emit 해주고 상위 컴포넌트에서 재렌더링하기
-      this.isChange = true ;
+      this.$emit("onDoubleClickText", this.id);
     },
     onChangeDetails($event) {
       this.$emit("onChangeDetails", $event.target.value);
@@ -61,9 +67,8 @@ export default {
     onPressChangeEnter() {
       this.$emit("onPressChangeEnter", this.id);
     },
-    //TODO: press esc 키도 고려, 취소 이벤트도 emit 으로 상위 컴포넌트에서 재렌더링
-    onCancle() {
-      this.isChange = false;
+    onCancleChange() {
+      this.$emit("onCancleChange");
     },
 
     onClickRemoveBtn() {

@@ -13,8 +13,9 @@
     <section class="todos-wrapper">
         <TodoItemList 
           :todos="todos"
-          :value="changeDetails"
           @onClickCheckBtn="onClickCheckBtn"
+          @onChangeDetails="onChangeDetails"
+          @onPressChangeEnter="onPressChangeEnter"
           @onClickRemoveBtn="onClickRemoveBtn" />
     </section>
     
@@ -72,18 +73,18 @@ export default {
     onClickCheckBtn(id) {
       this.todos = this.todos.map(todo => todo.id === id ? { ...todo, status: todo.status === 'active' ? 'done' : 'active' } : todo);
     },
-    onChanageDetails(details) {
+    onChangeDetails(details) {
       this.changeDetails = details;
     },
-    //TODO: 수정 로직 구현
     onPressChangeEnter(id) {
       if(!this.changeDetails) {
-        alert("할 일을 입력하세요.");
+        this.todos = this.todos.filter(todo => todo.id !== id);
         return;
       }
-      this.todos = [...this.todos, {id: this.todos.length, details: this.editDetails, status: 'active'}];
+      this.todos = this.todos.map(todo => todo.id === id ? { ...todo, details: this.changeDetails} : todo)
       this.editDetails = "";
     },
+
     onClickRemoveBtn(id) {
       this.todos = this.todos.filter(todo => todo.id !== id)
     },
