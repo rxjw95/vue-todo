@@ -62,7 +62,6 @@ export default {
     },
     onChangeEdit(details) {
       this.editDetails = details;
-      console.log(this.editDetails);
     },
     onPressCreateEnter() {
       if(!this.editDetails.trim()) {
@@ -75,6 +74,7 @@ export default {
 
     onClickCheckBtn(id) {
       this.todos = this.todos.map(todo => todo.id === id ? { ...todo, status: todo.status === 'active' ? 'done' : 'active' } : todo);
+      this.reflectMode(this.filterMode);
     },
     onChangeDetails(details) {
       this.changeDetails = details;
@@ -88,7 +88,6 @@ export default {
       this.todos = this.todos.map(todo => todo.id === id ? { ...todo, details: this.changeDetails} : todo)
       this.editDetails = "";
     },
-
     onClickRemoveBtn(id) {
       this.todos = this.todos.filter(todo => todo.id !== id);
     },
@@ -109,6 +108,15 @@ export default {
       this.todos = this.todos.filter(todo => todo.status === "active");
     },
     
+    reflectMode(filter) {
+      if(filter === "all") {
+        this.onClickFilterAllBtn(filter);
+      } else if(filter === "active") {
+        this.onClickFilterActiveBtn(filter);
+      } else {
+        this.onClickFilterCompletedBtn(filter);
+      }
+    },
   },
   
 }
