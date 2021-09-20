@@ -80,7 +80,7 @@ export default {
     },
 
     onClickCheckBtn(id) {
-      this.todos = this.todos.map(todo => todo.id === id ? { ...todo, status: todo.status === 'active' ? 'done' : 'active' } : todo);
+      this.todos = this.original.map(todo => todo.id === id ? { ...todo, status: todo.status === 'active' ? 'done' : 'active' } : todo);
       this.original = [...this.todos];
       this.reflectMode(this.filterMode);
     },
