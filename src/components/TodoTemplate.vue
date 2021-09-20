@@ -45,6 +45,11 @@ export default {
   },
   data() {
     return {
+      originalTodos:  [
+        {id: 0, details: "스프링 공부", status: "active"},
+        {id: 1, details: "스프링 중", status: "done"},
+        {id: 2, details: "스프링 포기", status: "active"},
+      ],
       todos: [
         {id: 0, details: "스프링 공부", status: "active"},
         {id: 1, details: "스프링 중", status: "done"},
@@ -57,49 +62,61 @@ export default {
   methods: {
     onClickAllCheckBtn(state) {
       this.todos = this.todos.map(todo => { return {...todo, status: state ? 'active' : 'done'}});
+      this.originalTodos = [...this.todos]; //원본 유지용
     },
     onChangeEdit(details) {
       this.editDetails = details;
     },
     onPressCreateEnter() {
+      this.editDetails = this.editDetails.trim();
       if(!this.editDetails) {
         alert("할 일을 입력하세요.");
         return;
       }
       this.todos = [...this.todos, {id: this.todos.length, details: this.editDetails, status: 'active'}];
+      this.originalTodos = [...this.todos]; //원본 유지용
       this.editDetails = "";
     },
 
     onClickCheckBtn(id) {
       this.todos = this.todos.map(todo => todo.id === id ? { ...todo, status: todo.status === 'active' ? 'done' : 'active' } : todo);
+      this.originalTodos = [...this.todos]; //원본 유지용
     },
     onChangeDetails(details) {
       this.changeDetails = details;
     },
     onPressChangeEnter(id) {
+      this.changeDetails = this.changeDetails.trim();
       if(!this.changeDetails) {
         this.todos = this.todos.filter(todo => todo.id !== id);
+        this.originalTodos = [...this.todos]; //원본 유지용
         return;
       }
       this.todos = this.todos.map(todo => todo.id === id ? { ...todo, details: this.changeDetails} : todo)
+      this.originalTodos = [...this.todos]; //원본 유지용
       this.editDetails = "";
     },
 
     onClickRemoveBtn(id) {
-      this.todos = this.todos.filter(todo => todo.id !== id)
+      this.todos = this.todos.filter(todo => todo.id !== id);
+      this.originalTodos = [...this.todos]; //원본 유지용
     },
 
     onClickFilterAllBtn() {
-      this.todos = this.todos.filter(todo => todo);
+      //this.todos = this.todos.filter(todo => todo); 
+      this.todos = [...this.originalTodos]; //원봉 유지용
     },
     onClickFilterActiveBtn() {
-      this.todos = this.todos.filter(todo => todo.status === 'active');
+      // this.todos = this.todos.filter(todo => todo.status === 'active');
+      this.todos = this.originalTodos.filter(todo => todo.status === 'active'); //원봉 유지용
     },
     onClickFilterCompletedBtn() {
-      this.todos = this.todos.filter(todo => todo.status === 'done');
+      // this.todos = this.todos.filter(todo => todo.status === 'done');
+      this.todos = this.originalTodos.filter(todo => todo.status === 'done'); //원봉 유지용
     },
     onClickClearBtn(){
       this.todos = [];
+      this.originalTodos = []; //원봉 유지용
     },
     
   },
