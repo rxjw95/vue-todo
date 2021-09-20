@@ -5,7 +5,7 @@
         placeholder="What needs to be done?" 
         :value="value" 
         @input="onChangeEdit" 
-        @keyup.enter="onPressCreateEnter" />
+        @keypress.enter="onPressCreateEnter" />
     </div>
     
 </template>

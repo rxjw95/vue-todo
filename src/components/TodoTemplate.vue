@@ -66,10 +66,10 @@ export default {
     },
     onChangeEdit(details) {
       this.editDetails = details;
+      console.log(this.editDetails);
     },
     onPressCreateEnter() {
-      this.editDetails = this.editDetails.trim();
-      if(!this.editDetails) {
+      if(!this.editDetails.trim()) {
         alert("할 일을 입력하세요.");
         return;
       }

@@ -10,9 +10,9 @@
         class="input-text" 
         :value="details" 
         @input="onChangeDetails"
-        @keyup.enter="onPressChangeEnter"
+        @keypress.enter="onPressChangeEnter"
         @blur="onCancleChange"
-        @keyup.esc="onCancleChange"
+        @keypress.esc="onCancleChange"
         ref="editbar"
         />
     </div>
