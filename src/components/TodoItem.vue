@@ -12,7 +12,7 @@
         @input="onChangeDetails"
         @keypress.enter="onPressChangeEnter"
         @blur="onCancleChange"
-        @keypress.esc="onCancleChange"
+        @keyup.esc="onCancleChange"
         ref="editbar"
         />
     </div>
