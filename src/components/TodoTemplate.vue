@@ -61,7 +61,8 @@ export default {
   },
   methods: {
     onClickAllCheckBtn(state) {
-      this.todos = this.todos.map(todo => { return {...todo, status: state ? 'active' : 'done'}});
+      // this.todos = this.todos.map(todo => { return {...todo, status: state ? 'active' : 'done'}});
+      this.todos = this.originalTodos.map(todo => { return {...todo, status: state ? 'active' : 'done'}});
       this.originalTodos = [...this.todos]; //원본 유지용
     },
     onChangeEdit(details) {
@@ -115,8 +116,9 @@ export default {
       this.todos = this.originalTodos.filter(todo => todo.status === 'done'); //원봉 유지용
     },
     onClickClearBtn(){
-      this.todos = [];
-      this.originalTodos = []; //원봉 유지용
+      // this.todos = this.todos.filter(todo => todo.status === "active");
+      this.todos = this.originalTodos.filter(todo => todo.status === "active");
+      this.originalTodos = [...this.todos];
     },
     
   },

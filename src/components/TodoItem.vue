@@ -94,7 +94,7 @@ export default {
   }
   
   .input-text {
-    font-size: 25px;
+    font-size: 20px;
     width: 80%;
     color: black;
     transition: all ease .5s 0s;

@@ -6,7 +6,7 @@
       <button :class="activeBtn" @click="onClickFilterActiveBtn">Active</button>
       <button :class="completedBtn" @click="onClickFilterCompletedBtn">Completed</button>
     </div>
-    <div class="clear" @click="onClickClearBtn">Clear</div>
+    <div :class="clearBtn" @click="onClickClearBtn">Clear completed</div>
   </div>
 </template>
 
@@ -30,6 +30,9 @@ export default {
     },
     completedBtn() {
       return this.selectBtns[2];
+    },
+    clearBtn() {
+      return this.hasCompletedTodo() ? "clearBtn" : "clearBtn hidden";
     }
   },
   methods: {
@@ -53,11 +56,19 @@ export default {
       return this.todos.filter(todo => todo.status === "active").length + " item left";
     },
     setSelectBtn(idx) {
+      //같은 버튼을 선택한 경우 그대로 반환
+      if(this.selectBtns[idx].includes("select")) { 
+        return [...this.selectBtns];
+      }
       return this.selectBtns.map(
         (btn, index) => 
           index == idx && !btn.includes(" select") 
             ? btn + " select" 
             : btn.replace(" select", ""));
+    },
+
+    hasCompletedTodo() {
+      return this.todos.find(todo => todo.status === 'done') !== undefined;
     }
   },
 }
@@ -106,8 +117,11 @@ export default {
     border: 2px solid #808080;
   }
 
-  .clear {
+  .clearBtn {
     cursor: pointer;
+  }
+  .hidden {
+    visibility: hidden;
   }
 
 </style>
