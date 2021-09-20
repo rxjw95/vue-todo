@@ -13,23 +13,19 @@
 <script>
 export default {
   name: 'FilterList',
-  data() {
-    return {
-      selectBtns: ['btn all select', 'btn active', 'btn completed'],
-    }
-  },
   props: {
     todos: Array,
+    filterMode: String,
   },
   computed: {
     allBtn() {
-      return this.selectBtns[0];
+      return this.filterMode === "all" ? "btn all" : "btn";
     },
     activeBtn() {
-      return this.selectBtns[1];
+      return this.filterMode === "active" ? "btn active" : "btn";
     },
     completedBtn() {
-      return this.selectBtns[2];
+      return this.filterMode === "done" ? "btn done" : "btn";
     },
     clearBtn() {
       return this.hasCompletedTodo() ? "clearBtn" : "clearBtn hidden";
@@ -37,16 +33,13 @@ export default {
   },
   methods: {
     onClickFilterAllBtn() {
-      this.selectBtns = this.setSelectBtn(0);
-      this.$emit("onClickFilterAllBtn");
+      this.$emit("onClickFilterAllBtn", "all");
     },
     onClickFilterActiveBtn() {
-      this.selectBtns = this.setSelectBtn(1);
-      this.$emit("onClickFilterActiveBtn");
+      this.$emit("onClickFilterActiveBtn", "active");
     },
     onClickFilterCompletedBtn() {
-      this.selectBtns = this.setSelectBtn(2);
-      this.$emit("onClickFilterCompletedBtn");
+      this.$emit("onClickFilterCompletedBtn", "completed");
     },
     onClickClearBtn() {
       this.$emit("onClickClearBtn");
@@ -54,17 +47,6 @@ export default {
 
     getLeftTodos() {
       return this.todos.filter(todo => todo.status === "active").length + " item left";
-    },
-    setSelectBtn(idx) {
-      //같은 버튼을 선택한 경우 그대로 반환
-      if(this.selectBtns[idx].includes("select")) { 
-        return [...this.selectBtns];
-      }
-      return this.selectBtns.map(
-        (btn, index) => 
-          index == idx && !btn.includes(" select") 
-            ? btn + " select" 
-            : btn.replace(" select", ""));
     },
 
     hasCompletedTodo() {
@@ -111,7 +93,7 @@ export default {
     border: 2px solid #808080;
   }
 
-  .select {
+  .btn.all, .btn.active, .btn.done {
     background-color: #808080;
     color: white;
     border: 2px solid #808080;
