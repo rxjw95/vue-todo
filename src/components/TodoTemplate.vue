@@ -59,6 +59,7 @@ export default {
       filterMode: "all",
       editDetails: "",
       changeDetails: "",
+      id: 3,
     }
   },
   methods: {
@@ -75,7 +76,7 @@ export default {
         alert("할 일을 입력하세요.");
         return;
       }
-      this.todos = [...this.todos, {id: this.todos.length, details: this.editDetails, status: 'active'}];
+      this.todos = [...this.todos, {id: this.id++, details: this.editDetails, status: 'active'}];
       this.original = [...this.todos];
       this.editDetails = "";
     },
