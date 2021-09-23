@@ -63,8 +63,9 @@ export default {
   },
   methods: {
     onClickAllCheckBtn(state) {
-       this.todos = this.todos.map(todo => { return {...todo, status: state ? 'active' : 'done'}});
-       this.original = [...this.todos];
+      this.todos = this.todos.map(todo => { return {...todo, status: state ? 'active' : 'done'}});
+      this.original = [...this.todos];
+      this.reflectMode(this.filterMode);
     },
     onChangeEdit(details) {
       this.editDetails = details;

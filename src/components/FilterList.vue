@@ -39,7 +39,7 @@ export default {
       this.$emit("onClickFilterActiveBtn", "active");
     },
     onClickFilterCompletedBtn() {
-      this.$emit("onClickFilterCompletedBtn", "completed");
+      this.$emit("onClickFilterCompletedBtn", "done");
     },
     onClickClearBtn() {
       this.$emit("onClickClearBtn");
