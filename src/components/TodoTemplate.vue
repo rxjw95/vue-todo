@@ -127,8 +127,8 @@ export default {
       this.todos = this.original.filter(todo => todo.status === 'done');
     },
     async onClickClearBtn(){
-      const clearIdList = this.original.filter(todo => todo.status === 'done').map(todo => {return {id: todo.id}});
-      await deleteCompletedTask(clearIdList);
+      const clearIdArr = this.original.filter(todo => todo.status === 'done').map(todo => todo.id);
+      await deleteCompletedTask(clearIdArr);
 
       this.original = this.original.filter(todo => todo.status === "active");
       this.todos = [...this.original];

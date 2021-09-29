@@ -36,8 +36,18 @@ async function deleteTask(taskId) {
 }
 
 async function deleteCompletedTask(taskIdList) {
-    await axios.put('/api/tasks/', taskIdList);
-    console.log(taskIdList);
+    /**
+     * 아래의 방식은 모든 배열 요소의 실행의 기다릴 필요없이 순서만 보장하면 되는 경우일 때,
+     * taskIdList.forEach(
+            async (taskId) => await axios.delete(`/api/tasks/${taskId}`),
+        );
+     */
+
+    //순서 보장도 필요없이 모든 요소를 병렬적으로 처리하기 위한 방법
+    const promises = taskIdList.map((taskId) =>
+        axios.delete(`/api/tasks/${taskId}`),
+    );
+    await Promise.all(promises);
 }
 
 export {
