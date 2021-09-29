@@ -1,9 +1,9 @@
 <template>
   <div class="item-block">
-    <div v-if="!isChange" class="item" >
+    <div v-if="!isChange" class="item" @mouseenter="onMouseEnter" @mouseleave="onMouseLeave" >
       <div :class="checkCircle" @click="onClickCheckBtn">✔</div>
       <div :class="text" @dblclick="onDoubleClickText">{{details}}</div>
-      <div class="remove" @click="onClickRemoveBtn">x</div>
+      <div :class="remove" @click="onClickRemoveBtn">x</div>
     </div>
     <div v-else class="change-item">
       <input 
@@ -30,10 +30,15 @@ export default {
     status: String,
     changeId: Number,
   },
-  updated() {
-    this.onEditFocus();
+  data() {
+    return {
+      isMouseEnter: false,
+    }
   },
   computed: {
+    remove() {
+      return this.isMouseEnter ? 'remove over' : 'remove';
+    },
     checkCircle() {
       return this.status === 'active' ? 'check-circle' : 'check-circle done';
     },
@@ -48,6 +53,9 @@ export default {
 
       }
     }
+  },
+  updated() {
+    this.onEditFocus();
   },
   methods: {
     onEditFocus() {
@@ -73,7 +81,15 @@ export default {
 
     onClickRemoveBtn() {
       this.$emit("onClickRemoveBtn", this.id);
-    }
+    },
+
+    onMouseEnter() {
+      this.isMouseEnter = true; 
+    },
+    onMouseLeave() {
+      this.isMouseEnter = false; 
+    },
+    
   }
 }
 
@@ -90,7 +106,6 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
   }
   
   .input-text {
@@ -143,14 +158,14 @@ export default {
 
   .remove {
     right: 25px;
-    opacity: .2;
+    opacity: 0;
     color: red;
     font-size: 27px;
     cursor: pointer;
     margin-left: auto;
     margin-right: 25px;
   }
-  .remove:hover {
+  .remove.over {
     opacity: 1;
   }
   
