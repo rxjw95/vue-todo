@@ -35,6 +35,7 @@
 import Form from './Form.vue';
 import TodoItemList from './TodoItemList.vue';
 import FilterList from './FilterList.vue';
+import { getTasks, createTask, patchDetailsOfTask, patchStatusOfTask, deleteTask } from '../service/TaskService'
 
 export default {
   name: 'TodoTemplate',
@@ -45,16 +46,8 @@ export default {
   },
   data() {
     return {
-      original: [
-        {id: 0, details: "스프링 공부", status: "active"},
-        {id: 1, details: "스프링 중", status: "done"},
-        {id: 2, details: "스프링 포기", status: "active"},
-      ],
-      todos: [
-        {id: 0, details: "스프링 공부", status: "active"},
-        {id: 1, details: "스프링 중", status: "done"},
-        {id: 2, details: "스프링 포기", status: "active"},
-      ],
+      original: [],
+      todos: [],
       editDetails: "",
       changeDetails: "",
       id: 3,
@@ -64,43 +57,57 @@ export default {
     onClickAllCheckBtn(state) {
       this.todos = this.todos.map(todo => { return {...todo, status: state ? 'active' : 'done'}});
       this.original = [...this.todos];
-      this.reflectMode(this.filterMode);
     },
     onChangeEdit(details) {
       this.editDetails = details;
     },
-    onPressCreateEnter() {
+    async onPressCreateEnter() {
       if(!this.editDetails.trim()) {
         alert("할 일을 입력하세요.");
         return;
       }
-      this.todos = [...this.todos, {id: this.id++, details: this.editDetails, status: 'active'}];
-      this.original = [...this.todos];
+
+      const createdTodo = {
+        details: this.editDetails,
+        status: 'active',
+      };
+      createdTodo.id = await createTask(createdTodo);
+      
+      this.original = [...this.original, createdTodo];
+      this.todos = [...this.original];
       this.editDetails = "";
     },
 
-    onClickCheckBtn(id) {
-      this.todos = this.original.map(todo => todo.id === id ? { ...todo, status: todo.status === 'active' ? 'done' : 'active' } : todo);
-      this.original = [...this.todos];
-      this.reflectMode(this.filterMode);
+    async onClickCheckBtn(id) {
+      const checkedTodo = this.original.find(todo => todo.id === id);
+      checkedTodo.status = checkedTodo.status === 'active' ? 'done' : 'active';
+
+      const modifiedTodo = await patchStatusOfTask(checkedTodo);
+
+      this.original = this.original.map(todo => todo.id === id ? { ...todo, ...modifiedTodo } : todo);
+      this.todos = [...this.original];
     },
     onChangeDetails(details) {
       this.changeDetails = details;
     },
-    onPressChangeEnter(id) {
-      this.changeDetails = this.changeDetails.trim();
-      if(!this.changeDetails) {
-        this.todos = this.todos.filter(todo => todo.id !== id);
-        this.original = [...this.todos];
+    async onPressChangeEnter(id) {
+      if(!this.changeDetails.trim()) {
         return;
       }
-      this.todos = this.todos.map(todo => todo.id === id ? { ...todo, details: this.changeDetails} : todo)
-      this.original = [...this.todos];
+      const changeTodo = this.original.find(todo => todo.id === id);
+      changeTodo.details = this.changeDetails;
+
+      const modifiedTodo = await patchDetailsOfTask(changeTodo);
+      
+      this.original = this.original.map(todo => todo.id === id ? { ...todo, ...modifiedTodo} : todo)
+      this.todo = [...this.original];
       this.editDetails = "";
     },
-    onClickRemoveBtn(id) {
-      this.todos = this.todos.filter(todo => todo.id !== id);
-      this.original = [...this.todos];
+    async onClickRemoveBtn(id) {
+      await deleteTask(id);
+    
+      this.original = this.original.filter(todo => todo.id !== id);
+      this.todos = [...this.original];
     },
 
     onClickFilterAllBtn() {
@@ -117,17 +124,11 @@ export default {
       this.original = [...this.todos];
     },
     
-    reflectMode(filter) {
-      if(filter === "all") {
-        this.onClickFilterAllBtn(filter);
-      } else if(filter === "active") {
-        this.onClickFilterActiveBtn(filter);
-      } else {
-        this.onClickFilterCompletedBtn(filter);
-      }
-    },
   },
-  
+  async mounted() {
+      this.original = await getTasks();
+      this.todos = [...this.original];
+    },
 }
 </script>
 

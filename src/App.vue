@@ -2,7 +2,6 @@
   <div id="app">
     <div class="title">todos</div>
     <TodoTemplate></TodoTemplate>
-    <p style="margin-top: 3rem; opacity:0.4"> 서버와 연결이 되지 않은 상태로 내부적으로 초기화된 데이터를 사용합니다. </p>
   </div>
 </template>
 

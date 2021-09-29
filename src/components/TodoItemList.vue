@@ -1,6 +1,6 @@
 <template>
   <div class="todo-list-block">
-    <div v-for="todo in todos" :key="todo.details"> 
+    <div v-for="todo in todos" :key="todo.id"> 
       <TodoItem 
         :id="todo.id"
         :details="todo.details" 
@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      changeId: -1,
+      changeId: "",
     }
   },
   props: {
@@ -43,11 +43,11 @@ export default {
       this.$emit("onChangeDetails", details);
     },
     onPressChangeEnter(id) {
-      this.changeId = -1;
+      this.changeId = "";
       this.$emit("onPressChangeEnter", id);
     },
     onCancleChange() {
-      this.changeId = -1;
+      this.changeId = "";
     },
     onClickRemoveBtn(id) {
       this.$emit("onClickRemoveBtn", id);

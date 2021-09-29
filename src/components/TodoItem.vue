@@ -25,10 +25,10 @@
 export default {
   name: 'TodoItem',
   props: {
-    id: Number,
+    id: String,
     details: String,
     status: String,
-    changeId: Number,
+    changeId: String,
   },
   data() {
     return {
