@@ -26,8 +26,18 @@ async function patchStatusOfTask(statusOfTask) {
     return response.data;
 }
 
+async function allPatchStatusOfTask(arrOfTask) {
+    const response = await axios.patch('/api/tasks', arrOfTask);
+    console.log(response);
+}
+
 async function deleteTask(taskId) {
     await axios.delete(`/api/tasks/${taskId}`);
+}
+
+async function deleteCompletedTask(taskIdList) {
+    await axios.put('/api/tasks/', taskIdList);
+    console.log(taskIdList);
 }
 
 export {
@@ -36,4 +46,6 @@ export {
     patchDetailsOfTask,
     patchStatusOfTask,
     deleteTask,
+    allPatchStatusOfTask,
+    deleteCompletedTask,
 };

@@ -35,7 +35,13 @@
 import Form from './Form.vue';
 import TodoItemList from './TodoItemList.vue';
 import FilterList from './FilterList.vue';
-import { getTasks, createTask, patchDetailsOfTask, patchStatusOfTask, deleteTask } from '../service/TaskService'
+import { getTasks, 
+         createTask, 
+         patchDetailsOfTask, 
+         patchStatusOfTask, 
+         deleteTask,
+         allPatchStatusOfTask,
+         deleteCompletedTask } from '../service/TaskService'
 
 export default {
   name: 'TodoTemplate',
@@ -54,8 +60,9 @@ export default {
     }
   },
   methods: {
-    onClickAllCheckBtn(state) {
+    async onClickAllCheckBtn(state) {
       this.todos = this.todos.map(todo => { return {...todo, status: state ? 'active' : 'done'}});
+      await allPatchStatusOfTask(this.todos);
       this.original = [...this.todos];
     },
     onChangeEdit(details) {
@@ -119,16 +126,19 @@ export default {
     onClickFilterCompletedBtn() {
       this.todos = this.original.filter(todo => todo.status === 'done');
     },
-    onClickClearBtn(){
-      this.todos = this.todos.filter(todo => todo.status === "active");
-      this.original = [...this.todos];
+    async onClickClearBtn(){
+      const clearIdList = this.original.filter(todo => todo.status === 'done').map(todo => {return {id: todo.id}});
+      await deleteCompletedTask(clearIdList);
+
+      this.original = this.original.filter(todo => todo.status === "active");
+      this.todos = [...this.original];
     },
     
   },
   async mounted() {
       this.original = await getTasks();
       this.todos = [...this.original];
-    },
+  },
 }
 </script>
 
