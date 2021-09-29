@@ -13,9 +13,13 @@
 <script>
 export default {
   name: 'FilterList',
+  data() {
+    return {
+      filterMode: "all",
+    }
+  },
   props: {
     todos: Array,
-    filterMode: String,
   },
   computed: {
     allBtn() {
@@ -33,13 +37,16 @@ export default {
   },
   methods: {
     onClickFilterAllBtn() {
-      this.$emit("onClickFilterAllBtn", "all");
+      this.filterMode = 'all';
+      this.$emit("onClickFilterAllBtn");
     },
     onClickFilterActiveBtn() {
-      this.$emit("onClickFilterActiveBtn", "active");
+      this.filterMode = 'active';
+      this.$emit("onClickFilterActiveBtn");
     },
     onClickFilterCompletedBtn() {
-      this.$emit("onClickFilterCompletedBtn", "done");
+      this.filterMode = 'completed';
+      this.$emit("onClickFilterCompletedBtn");
     },
     onClickClearBtn() {
       this.$emit("onClickClearBtn");

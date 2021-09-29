@@ -22,7 +22,6 @@
     <section class="filter-wrapper">
         <FilterList 
           :todos="todos" 
-          :filterMode="filterMode"
           @onClickFilterAllBtn="onClickFilterAllBtn"
           @onClickFilterActiveBtn="onClickFilterActiveBtn"
           @onClickFilterCompletedBtn="onClickFilterCompletedBtn"
@@ -56,7 +55,6 @@ export default {
         {id: 1, details: "스프링 중", status: "done"},
         {id: 2, details: "스프링 포기", status: "active"},
       ],
-      filterMode: "all",
       editDetails: "",
       changeDetails: "",
       id: 3,
@@ -105,16 +103,13 @@ export default {
       this.original = [...this.todos];
     },
 
-    onClickFilterAllBtn(mode) {
-      this.filterMode = mode;
+    onClickFilterAllBtn() {
       this.todos = this.original.filter(todo => todo); 
     },
-    onClickFilterActiveBtn(mode) {
-      this.filterMode = mode;
+    onClickFilterActiveBtn() {
       this.todos = this.original.filter(todo => todo.status === 'active');
     },
-    onClickFilterCompletedBtn(mode) {
-      this.filterMode = mode;
+    onClickFilterCompletedBtn() {
       this.todos = this.original.filter(todo => todo.status === 'done');
     },
     onClickClearBtn(){
