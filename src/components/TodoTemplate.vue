@@ -60,9 +60,11 @@ export default {
     }
   },
   methods: {
-    async onClickAllCheckBtn(state) {
-      this.todos = this.todos.map(todo => { return {...todo, status: state ? 'active' : 'done'}});
-      await allPatchStatusOfTask(this.todos);
+    async onClickAllCheckBtn(isAllCheck) {
+      const modifyTodo = this.todos.filter(todo => !isAllCheck ? todo.status === 'active' : todo.status === 'done');
+      await allPatchStatusOfTask(modifyTodo);
+
+      this.todos = this.todos.map(todo => { return {...todo, status: isAllCheck ? 'active' : 'done'}});
       this.original = [...this.todos];
     },
     onChangeEdit(details) {
